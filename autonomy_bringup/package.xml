@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd"
+             schematypens="http://www.w3.org/2001/XMLSchema"?>
+
+<package format="3">
+
+  <name>autonomy_bringup</name>
+  <version>0.0.0</version>
+
+  <description>Launch package for the autonomous robot stack.</description>
+
+  <maintainer email="radar@todo.todo">radar</maintainer>
+
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <exec_depend>path_follower</exec_depend>
+  <exec_depend>obstacle_avoidance</exec_depend>
+  <exec_depend>human_behavior</exec_depend>
+  <exec_depend>navigation_manager</exec_depend>
+  <exec_depend>navigation_to_rosbot</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+
+</package>
