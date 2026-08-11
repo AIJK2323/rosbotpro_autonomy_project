@@ -1,0 +1,123 @@
+ROSBOT PRO Documentation 
+
+## How to generate and connect to SSH:    //red = 5v green = rx black = g yellow tx
+## DO THIS IN THE CLIENT PC:
+## MUST BE ON THE SAME CONNECTION!!!!	
+
+```bash
+
+ssh-keygen -t ed25519
+ssh-copy-id radar@10.155.15.48
+ssh radar@10.155.15.48
+
+```
+---
+
+## INSTALLING THE ROSBOT PRO DRIVERS:
+
+```bash
+
+cd ~/ros2_ws/src
+
+git clone https://github.com/robotverseny/drivers
+
+```
+
+---
+
+## REQUIRED PACKAGES: 
+
+```bash
+
+sudo apt update
+
+```
+
+---
+
+```bash
+
+sudo apt install libpcap0.8-dev libpcl-dev libboost-all-dev ros-jazzy-nav2-msgs ros-jazzy-ackermann-msgs ros-jazzy-tf2-msgs ros-jazzy-tf2-geometry-msgs ros-jazzy-joint-state-publisher ros-jazzy-robot-localization ros-jazzy-usb-cam ros-jazzy-foxglove*
+
+```
+
+---
+
+```bash
+
+sudo apt install libpcap0.8-dev libpcl-dev libboost-all-dev ros-jazzy-nav2-msgs ros-jazzy-ackermann-msgs ros-jazzy-tf2-msgs ros-jazzy-tf2-geometry-msgs ros-jazzy-joint-state-publisher ros-jazzy-robot-localization ros-jazzy-usb-cam ros-jazzy-foxglove*
+
+```
+
+---
+
+
+```bash
+
+rosdep install --from-paths src --ignore-src -y
+
+rosdep update
+
+```
+
+---
+
+
+## BUILDING PACKAGE: 
+
+```bash
+
+cd ~/ros2_ws
+
+colcon build --symlink-install --packages-select serial wheeltec_robot_msg lslidar_msgs lslidar_driver turn_on_wheeltec_robot wheeltec_robot_urdf usb_cam_launcher wheeltec_py_package
+
+```
+
+---
+
+```bash
+
+sudo nano /etc/udev/rules.d/usb.rules
+
+```
+
+---
+
+```bash
+
+sudo su
+
+echo  'KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60",ATTRS{serial}=="0002", MODE:="0777", GROUP:="dialout", SYMLINK+="wheeltec_controller"' >/etc/udev/rules.d/wheeltec_controller.rules
+echo  'KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60",ATTRS{serial}=="0001", MODE:="0777", GROUP:="dialout", SYMLINK+="wheeltec_laser"' >/etc/udev/rules.d/rplidar_laser.rules
+echo  'KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60",ATTRS{serial}=="0003", MODE:="0777", GROUP:="dialout", SYMLINK+="wheeltec_laser"' >/etc/udev/rules.d/ld14.rules
+echo  'KERNEL=="ttyCH343USB*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4",ATTRS{serial}=="0002", MODE:="0777", GROUP:="dialout", SYMLINK+="wheeltec_controller"' >/etc/udev/rules.d/wheeltec_wheeltec.rules
+
+service udev reload
+sleep 2
+service udev restart
+
+sleep 2
+udevadm control --reload-rules
+sleep 2
+udevadm trigger
+
+```
+
+---
+
+```bash
+
+/dev/wheeltec_controller  /dev/wheeltec_laser
+
+```
+
+---
+
+```bash
+
+ros2 launch turn_on_wheeltec_robot turn_on_wheeltec_robot.launch.py lidar:=true camera:=true foxglove:=true joy:=false
+
+```
+
+---
+
